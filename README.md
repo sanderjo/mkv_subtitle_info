@@ -11,3 +11,4 @@ To run this on any download: SABnzbd -> Config -> Categories: at Default, select
 Python3 and python3-pip
 Python modules listed in `requirements.txt`. Install with `python3 -m pip install -r requirements.txt -U`
 
+![image](https://github.com/sanderjo/mkv_subtitle_info/assets/1273502/2a80b96f-e5a2-41a0-bc49-cdeef3488f2f)
