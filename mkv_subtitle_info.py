@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
 # Gets subtitle info from a MKV file
+# If there is no MKV: print number of srt files
+# input: directory or file
+
+# to run this on any download: SABnzbd -> Config -> Categories: at Default, select as Script. And Save
 
 import pymediainfo
 import os
