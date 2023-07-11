@@ -27,26 +27,34 @@ def find_biggest_file(path):
 				max_file = os.path.join( folder, file )
 	return(max_file)
 
+def find_srt_files(dir):
+	srt_counter = 0
+	for root, dirs, files in os.walk(dir):
+		for file in files:
+			if file.lower().endswith(".srt"):
+				srt_counter += 1
+	return srt_counter
 
 
 input = sys.argv[1]
 if os.path.isdir(input):
 	videofile = find_biggest_file(input)
 elif os.path.isfile(input):
-	videofile = file
+	videofile = input
 else:
 	print("no valid input: must be a dir or a file")
 	sys.exit(1)	
 
-_, file_extension = os.path.splitext(videofile)
-if file_extension.lower() != ".mkv":
-	print("no MKV")
-	sys.exit(1)
-	
-mi = pymediainfo.MediaInfo.parse(videofile, output="JSON")
-for i in json.loads(mi)["media"]["track"]:
-	if i['@type'] == 'Text':
-		print(i['Language_String1'] + " ", end="")
-		if i["Default_String"] == "Yes":
-			print("(default) ", end="")
+if videofile.lower().endswith(".mkv"):
+	mi = pymediainfo.MediaInfo.parse(videofile, output="JSON")
+	for i in json.loads(mi)["media"]["track"]:
+		if i['@type'] == 'Text':
+			print(i['Language_String1'] + " ", end="")
+			if i["Default_String"] == "Yes":
+				print("(default) ", end="")
+elif os.path.isdir(input):
+	# check if there are .srt files in that dir
+	srts = find_srt_files(input)
+	if srts > 0:
+		print("srt files found:", srts)
 
