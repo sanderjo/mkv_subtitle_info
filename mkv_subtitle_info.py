@@ -35,8 +35,12 @@ def find_srt_files(dir):
 				srt_counter += 1
 	return srt_counter
 
+try:
+	input = sys.argv[1]
+except:
+	print("You must specify a directory or file as parameter")
+	sys.exit(1)
 
-input = sys.argv[1]
 if os.path.isdir(input):
 	videofile = find_biggest_file(input)
 elif os.path.isfile(input):
@@ -58,3 +62,4 @@ elif os.path.isdir(input):
 	if srts > 0:
 		print("srt files found:", srts)
 
+sys.exit(0) # all good
