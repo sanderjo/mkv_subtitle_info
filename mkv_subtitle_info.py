@@ -33,11 +33,13 @@ def find_biggest_file(path):
 
 def find_srt_files(dir):
 	srt_counter = 0
+	srt_info = ""
 	for root, dirs, files in os.walk(dir):
 		for file in files:
 			if file.lower().endswith(".srt"):
+				srt_info += file + " - "
 				srt_counter += 1
-	return srt_counter
+	return srt_info
 
 try:
 	input = sys.argv[1]
@@ -54,16 +56,25 @@ else:
 	sys.exit(1)	
 
 if videofile.lower().endswith(".mkv"):
+	subtitle_info = ""
 	mi = pymediainfo.MediaInfo.parse(videofile, output="JSON")
 	for i in json.loads(mi)["media"]["track"]:
 		if i['@type'] == 'Text':
-			print(i['Language_String1'] + " ", end="")
+			subtitle_info += i['Language_String1'] + " "
+			#print(i['Language_String1'] + " ", end="")
 			if i["Default_String"] == "Yes":
-				print("(default) ", end="")
+				subtitle_info += "(default) "
+				#print("(default) ", end="")
+	if subtitle_info != "":
+		print("MKV subtitles:", subtitle_info)
+	else:
+		print("MKV: no subtitles found")
 elif os.path.isdir(input):
 	# check if there are .srt files in that dir
-	srts = find_srt_files(input)
-	if srts > 0:
-		print("srt files found:", srts)
+	srts_found = find_srt_files(input)
+	if srts_found != "":
+		print("No MKV, but srt files found:", srts_found)
+	else:
+		print("No MKV, and no srt files found")
 
 sys.exit(0) # all good
