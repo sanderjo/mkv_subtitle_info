@@ -60,8 +60,11 @@ if videofile.lower().endswith(".mkv"):
 	mi = pymediainfo.MediaInfo.parse(videofile, output="JSON")
 	for i in json.loads(mi)["media"]["track"]:
 		if i['@type'] == 'Text':
-			subtitle_info += i['Language_String1'] + " "
-			#print(i['Language_String1'] + " ", end="")
+			try:
+				subtitle_info += i['Language_String1'] + " "
+			except:
+				# no 'Language_String1' found
+				subtitle_info += "Unknown Language" + " "
 			if i["Default_String"] == "Yes":
 				subtitle_info += "(default) "
 				#print("(default) ", end="")
