@@ -107,16 +107,19 @@ if videofile.lower().endswith(".mkv"):
 			if i["Default_String"] == "Yes":
 				subtitle_info += "(default) "
 				#print("(default) ", end="")
-	if subtitle_info != "":
-		print("MKV subtitles:", subtitle_info)
-	else:
-		print("MKV: no subtitles found")
+
 
 	if audio_track_number:
 		print("audio_track_number", audio_track_number)
 
 	if subtitle_track_number:
 		print("subtitle_track_number", subtitle_track_number)
+
+	# As last output, so it will appear in SABnzbd's History overview:
+	if subtitle_info != "":
+		print("MKV subtitles:", subtitle_info)
+	else:
+		print("MKV: no subtitles found")
 
 elif os.path.isdir(input):
 	# check if there are .srt files in that dir
