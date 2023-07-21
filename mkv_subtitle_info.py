@@ -11,6 +11,20 @@ import os
 import json
 import sys
 
+wanted_language_prio = {}
+wanted_language_prio['Flemish']=1
+wanted_language_prio['Dutch']=2
+wanted_language_prio['English']=3
+
+print("Preferred:", wanted_language_prio)
+
+subtitle_prio_found = 9999
+audio_prio_found = 9999
+
+subtitle_track_number = audio_track_number = None
+
+
+
 def find_biggest_file(path):
 	path = os.path.abspath(path)
 	size = 0
@@ -59,12 +73,37 @@ if videofile.lower().endswith(".mkv"):
 	subtitle_info = ""
 	mi = pymediainfo.MediaInfo.parse(videofile, output="JSON")
 	for i in json.loads(mi)["media"]["track"]:
-		if i['@type'] == 'Text':
+		# Audio:
+		if i['@type'] == 'Audio':
+			#print("SJ: Audio",  i['StreamCount'], i['Language_String1'])
 			try:
-				subtitle_info += i['Language_String1'] + " "
+				language = i['Language_String1']
 			except:
-				# no 'Language_String1' found
-				subtitle_info += "Unknown Language" + " "
+				language = "unknown"
+			if language in wanted_language_prio:
+				print("SJ200: yes, audio wanted language ... ", language, "prio", wanted_language_prio[language])
+				if wanted_language_prio[language] < audio_prio_found:
+					audio_prio_found = wanted_language_prio[language]
+					audio_track_number = i['StreamCount']
+
+		# Subtitle:
+		if i['@type'] == 'Text':
+			#print("SJ100", i)
+			print("SJ: subtitle ", i['@typeorder'], i['Language_String1'])
+			try:
+				language = i['Language_String1']
+			except:
+				language = "unknown"
+
+			if language in wanted_language_prio:
+				print("SJ300: yes, subtitle wanted language ... ", language, "prio",wanted_language_prio[language])
+				if wanted_language_prio[language] < subtitle_prio_found:
+					subtitle_prio_found = wanted_language_prio[language]
+					subtitle_track_number = i['@typeorder']
+					print("SJ300", subtitle_prio_found, subtitle_track_number)
+
+			subtitle_info += language + " "
+
 			if i["Default_String"] == "Yes":
 				subtitle_info += "(default) "
 				#print("(default) ", end="")
@@ -72,6 +111,13 @@ if videofile.lower().endswith(".mkv"):
 		print("MKV subtitles:", subtitle_info)
 	else:
 		print("MKV: no subtitles found")
+
+	if audio_track_number:
+		print("audio_track_number", audio_track_number)
+
+	if subtitle_track_number:
+		print("subtitle_track_number", subtitle_track_number)
+
 elif os.path.isdir(input):
 	# check if there are .srt files in that dir
 	srts_found = find_srt_files(input)
