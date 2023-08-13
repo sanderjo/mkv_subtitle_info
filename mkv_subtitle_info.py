@@ -88,19 +88,18 @@ if videofile.lower().endswith(".mkv"):
 
 		# Subtitle:
 		if i['@type'] == 'Text':
-			#print("SJ100", i)
-			print("SJ: subtitle ", i['@typeorder'], i['Language_String1'])
 			try:
 				language = i['Language_String1']
 			except:
 				language = "unknown"
 
 			if language in wanted_language_prio:
-				print("SJ300: yes, subtitle wanted language ... ", language, "prio",wanted_language_prio[language])
 				if wanted_language_prio[language] < subtitle_prio_found:
 					subtitle_prio_found = wanted_language_prio[language]
-					subtitle_track_number = i['@typeorder']
-					print("SJ300", subtitle_prio_found, subtitle_track_number)
+					try:
+						subtitle_track_number = i['@typeorder']
+					except:
+						subtitle_track_number = i['StreamCount']
 
 			subtitle_info += language + " "
 
