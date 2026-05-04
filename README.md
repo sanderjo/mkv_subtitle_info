@@ -15,3 +15,30 @@ Example result in SABnzbd's History:
 
 ![image](https://github.com/sanderjo/mkv_subtitle_info/assets/1273502/f8276e0e-1acd-41af-8bf0-0f60e7065982)
 
+
+
+## ugly but easy: from commandline with standard linux commands
+
+Subtitles:
+
+```
+$ head -10000 blabla.mkv | strings -2 | grep -A 1 "TEXT/UTF8"  | grep -v "TEXT/UTF8"
+es
+--
+ro
+--
+hu
+--
+de
+--
+fr
+--
+en
+```
+
+Audio:
+```
+$ head -10000 blabla.mkv | strings -2 | grep -A 1 "AAC"  | grep -v "AAC"
+en
+```
+
