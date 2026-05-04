@@ -41,14 +41,16 @@ Audio:
 $ head -10000 blabla.mkv | strings -2 | grep -A 1 "AAC"  | grep -v "AAC"
 en
 ```
-On one line:
+One line as output:
+
+
 ```
-$ head -10000 blabla.mkv | strings -2 | awk '/TEXT/ {getline; printf "%s ", $0} END {print ""} '
-es ro hu de fr en
+$ head -10000 blabla.mkv | strings -2 | awk 'BEGIN {printf "Audio: "} /TEXT/ {getline; printf "%s ",
+ $0} END {print ""}'
+Audio: es ro hu de fr en
 
-$ head -10000 blabla.mkv | strings -2 | awk '/AAC/ {getline; printf "%s ", $0} END {print ""} '
-en
+$ head -10000 blabla.mkv | strings -2 | awk 'BEGIN {printf "Audio: "} /AAC/ {getline; printf "%s ",
+$0} END {print ""}'
+Audio: en
 ```
-
-
 
