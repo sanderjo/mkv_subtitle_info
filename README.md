@@ -45,9 +45,9 @@ One line as output:
 
 
 ```
-$ head -10000 blabla.mkv | strings -2 | awk 'BEGIN {printf "Audio: "} /TEXT/ {getline; printf "%s ",
+$ head -10000 blabla.mkv | strings -2 | awk 'BEGIN {printf "Subs: "} /TEXT/ {getline; printf "%s ",
  $0} END {print ""}'
-Audio: es ro hu de fr en
+Subs: es ro hu de fr en
 
 $ head -10000 blabla.mkv | strings -2 | awk 'BEGIN {printf "Audio: "} /AAC/ {getline; printf "%s ",
 $0} END {print ""}'
