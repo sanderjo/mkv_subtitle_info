@@ -2,7 +2,7 @@
 
 '''
 Brute force finding of subtiles in an .MKV file
-No external libraries or tools needed
+No external libraries nor tools needed
 '''
 
 # inputfile is first parameter given, otherwise default to "first_100k.mkv"
@@ -16,7 +16,7 @@ with open(inputfile, "rb") as f:
 
 # print(f"Read {len(data)} bytes from first_100k.mkv")
 
-# # find "dutch" in data (case-insensitive)
+# # find "dutch" in data (case-insensitive) ... real real brute force
 # index = data.lower().find(b"dutch")
 # if index != -1:
 #     print(f"Found 'dutch' at byte index {index}")
@@ -36,8 +36,6 @@ for byte in data:
 if current_line:
     lines.append(current_line.decode('ascii', errors='ignore'))
 
-# print(lines)
-# print("40 is", lines[40])  # print the 41st line (0-based index)
 
 i = 1
 while i < len(lines):
@@ -48,6 +46,12 @@ while i < len(lines):
         # print("AUDIO:",lines[i+1])
         # print("AUDIO:",lines[i+2])
         print("AUDIO:",lines[i+3].replace("Sn", ""))
+        print("AUDIO:",lines[i+4])
+    if lines[i].startswith("A_AAC"):
+        # print("AUDIO:",lines[i-1])
+        # print("AUDIO:",lines[i+1])
+        # print("AUDIO:",lines[i+2])
+        #print("AUDIO:",lines[i+3].replace("Sn", ""))
         print("AUDIO:",lines[i+4])
     i += 1
 
